@@ -1,0 +1,14 @@
+Online Ticketing System:
+
+Collections: 4 (movie, schedule, reservation, user)
+Movie Collection:
+Title and Summary
+
+Schedule Collection:
+Schedule ID, Movie ID, Cinema Code, Date and Time, Price per Ticket, Field for Seat Reservations
+
+User Collection:
+USER ID, User Name, Email, Password, Number, First and Last Name
+
+Reservation Collection:
+Schedule ID, User ID, Seats, Total Payment, Date of Reservation, Payment
