@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
 router.post("/signup", (req, res) => {
@@ -51,6 +52,36 @@ router.post("/signup", (req, res) => {
         .status(200)
         .json({ message: "Account registered.", error: false, token: token });
     }
+  });
+});
+
+router.post("/login", (req, res) => {
+  const { email, password } = req.body;
+
+  if (email === "" || password === "")
+    return res
+      .status(400)
+      .json({ message: "Email/Password Incorrect", error: true });
+
+  User.findOne({ email: email }, (err, data) => {
+    if (err)
+      return res
+        .status(500)
+        .json({ message: "Server Error: " + err.message, error: true });
+
+    const isMatch = bcrypt.compareSync(password, data.password);
+
+    if (isMatch) {
+      const token = jwt.sign({ id: data._id }, process.env.KEY);
+      return res.status(200).json({
+        message: "Success.",
+        error: false,
+        token: token,
+      });
+    } else
+      return res
+        .status(400)
+        .json({ message: "Email/Password Incorrect", error: true });
   });
 });
 
